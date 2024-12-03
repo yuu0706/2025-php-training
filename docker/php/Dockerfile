@@ -14,6 +14,3 @@ RUN apt-get update && apt-get install -y \
 
 # 作業ディレクトリを/var/wwwに設定
 WORKDIR /var/www
-
-# プロジェクトのファイルをコンテナにコピー
-COPY . .

@@ -1,6 +1,5 @@
 <?php
-include 'connect_db.php';
-include 'functions.php';
+include 'connect.php';
 
 ?>
 <!DOCTYPE html>
@@ -11,28 +10,38 @@ include 'functions.php';
         <script src='script.js'></script>
     </head>
     <body>
-        <button onclick="location.href='add_screen.php'">追加</button>
         <?php
-        $sql="SELECT num,title,about,addday,lastday FROM ToDoList";
+        $sql="SELECT * FROM ToDoList";
         $stmt = $pdo->query($sql);
+
+        echo "<button onclick='location.href=\"add_screen.php\"'>追加</button>";
         echo "<table class='todoList'>";
         echo "<tr><th>番号</th><th>タイトル</th><th>内容</th><th>作成日</th><th>更新日</th><th>  </th></tr>";
-        $data_number=0;
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $data_number++;
             echo "<tr>";
-            echo "<td>" . htmlspecialchars($data_number) . "</td>";
+            echo "<td>" . htmlspecialchars($row['id']) . "</td>";
             echo "<td>" . htmlspecialchars($row['title']) . "</td>";
             echo "<td>" . htmlspecialchars($row['content']) . "</td>";
             echo "<td>" . htmlspecialchars($row['addday']) . "</td>";
             echo "<td>" . htmlspecialchars($row['lastday']) . "</td>";
+            $id=$row['id'];
             $title=$row['title'];
-            echo "<td><button onclick='deleteData(\"$title\")'>削除</button></br>
-        <button onclick=\"location.href='https://www.google.co.jp/'\">編集</button></td>";
+            $content=$row['content'];
+            echo "<td>";
+            echo "<form action='delete.php' method='POST' onsubmit='return deleteConfirm(\"$title\")'>
+                <input type='hidden' name='delete_id' value='$id'>
+                <button type='submit'>削除</button>
+                </form>";
+            echo "</br>";
+            echo "<form action='edit_screen.php' method='POST'>
+                <input type='hidden' name='edit_id' value='$id'>
+                <input type='hidden' name='edit_title' value='$title'>
+                <input type='hidden' name='edit_content' value='$content'>
+                <button type='submit'>編集</button>
+                </form>";
             echo "</tr>";
         }
         echo "</table>";
         ?>
-                
     </body>
 </html>

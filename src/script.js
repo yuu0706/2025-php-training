@@ -1,5 +1,3 @@
-function deleteData(title){
-    if(confirm('"'+title+"'"+"を本当に削除しますか？")){
-
-    }
+function deleteConfirm(title) {
+    return confirm("'" + title + "'" + " を本当に削除しますか？");
 }
